@@ -1,0 +1,4 @@
+[run]
+omit =
+    mawazo/config/gunicorn.py
+    mawazo/__main__.py

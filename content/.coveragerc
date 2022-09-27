@@ -1,4 +1,0 @@
-[run]
-omit =
-    content/config/gunicorn.py
-    content/__main__.py
