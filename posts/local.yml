@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+    # gateway:
+    #     image: mawazo/gateway:latest
+    #     command: sh -c "uvicorn main:app --reload --host 0.0.0.0"
+    #     build:
+    #         context: ./gateway
+    #         dockerfile: Dockerfile
+    #     env_file:
+    #         - ./gateway/configuration/.env
+    #     ports:
+    #       - 8001:8000
+    #     depends_on:
+    #       # - users
+    #       - posts
+    #     volumes:
+    #       - ./gateway:/app
+
+    # users:
+    #     image: baranbartu/k-users:latest
+    #     command: sh -c "uvicorn main:app --reload --host 0.0.0.0"
+    #     build:
+    #         context: ./users
+    #         dockerfile: Dockerfile
+    #     env_file:
+    #         - ./users/.env
+    #     volumes:
+    #       - ./users:/app
+
+    mawazo:
+        image: posts:latest
+        container_name: posts
+        # command: sh -c "uvicorn main:app --reload --host 0.0.0.0"
+        build:
+            context: .
+            dockerfile: ../compose/local/Dockerfile.posts.local
+        volumes:
+           - .:/posts:z
+        ports:
+          - '8000:8000'
+
+    mongo:
+      image: mongo:latest
+      container_name: mongo
+      restart: always
+      # environment:
+        # - .envs/.local/.databases/.mongodb
+      ports:
+        - '6000:27017'

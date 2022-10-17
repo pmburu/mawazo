@@ -1,0 +1,8 @@
+motor # https://github.com/mongodb/motor
+cryptography # https://github.com/pyca/cryptography
+uvicorn # https://github.com/encode/uvicorn
+pymongo # https://github.com/mongodb/mongo-python-driver
+fastapi # https://github.com/tiangolo/fastapi
+pydantic # https://github.com/pydantic/pydantic
+beanie # https://github.com/roman-right/beanie
+python-dotenv

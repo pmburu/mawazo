@@ -1,9 +1,29 @@
-FROM python:3.10.0-alpine
+FROM ubuntu:latest
 
-RUN mkdir -p /app
+RUN apt update && apt upgrade -y \
+curl
 
-WORKDIR /app
-RUN pip install -r requirements.txt
-EXPOSE 8080
+RUN apt install -y -q build-essential python3-pip python3-dev
+RUN pip3 install -U pip setuptools wheel
+RUN pip3 install gunicorn uvloop httptools
 
-ENTRYPOINT [ "python" ]
+COPY ../../requirements/ /posts/requirements
+RUN pip3 install -r /posts/requirements/local.txt
+
+COPY posts/ /posts
+
+ENV ACCESS_LOG=${ACCESS_LOG:-/proc/1/fd/1}
+ENV ERROR_LOG=${ERROR_LOG:-/proc/1/fd/2}
+
+# ENTRYPOINT /usr/local/bin/gunicorn \
+  # -b 0.0.0.0:80 \
+  # -w 4 \
+  # -k uvicorn.workers.UvicornWorker main:app \
+  # --timeout 600 \
+  # --chdir /posts \
+  # --access-logfile "$ACCESS_LOG" \
+  # --error-logfile "$ERROR_LOG"
+
+EXPOSE 8000
+
+CMD [ "uvicorn", "posts.main:app", "--host", "0.0.0.0", "--reload"]
